@@ -93,7 +93,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
         </div>
         <div className="addproduct-price">
           <div className="addproduct-itemfield">
-            <p>Price</p>
+            <p>Old Price</p>
             <input
               value={productDetails.old_price}
               onChange={productChangeHandler}
@@ -103,7 +103,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
             />
           </div>
           <div className="addproduct-itemfield">
-            <p>Offer Price</p>
+            <p>New Price</p>
             <input
               value={productDetails.new_price}
               onChange={productChangeHandler}
