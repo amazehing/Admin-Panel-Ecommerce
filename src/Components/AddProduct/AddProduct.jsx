@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AddProduct.css";
 import upload_area from "../../assets/upload_area.svg";
-import cross_icon from "../../assets/cross_icon.png"
+import cross_icon from "../../assets/cross_icon.png";
 
 const AddProduct = ({ onClose, onProductAdded }) => {
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [productDetails, setProductDetails] = useState({
     name: "",
-    image:"",
+    image: "",
     category: "",
     new_price: "",
     old_price: "",
@@ -21,7 +21,15 @@ const AddProduct = ({ onClose, onProductAdded }) => {
   }, []);
 
   const imageHandler = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    const maxSize = 50 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+      alert("File size exceeds the maximum limit of 50MB");
+      return;
+    }
+
+    setImage(file);
   };
 
   const productChangeHandler = (e) => {
@@ -45,12 +53,39 @@ const AddProduct = ({ onClose, onProductAdded }) => {
     }
   };
 
-  const AddProduct = async () => {
+  const fileUpload = async (file) => {
     try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await axios.post(
+        "http://localhost:8080/images",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data; 
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      throw error;
+    }
+  };
+
+  const addProduct = async () => {
+    try {
+      let imageId = productDetails.image;
+      if (image) {
+        imageId = await fileUpload(image);
+      }
+
       const payload = {
         name: productDetails.name,
         new_price: productDetails.new_price,
         old_price: productDetails.old_price,
+        category: productDetails.category,
+        imageIds: imageId ? [imageId] : []
       };
 
       await axios.post(
@@ -58,10 +93,11 @@ const AddProduct = ({ onClose, onProductAdded }) => {
         payload
       );
 
+      // reset view
       setProductDetails({
         ...productDetails,
         name: "",
-        image:"",
+        image: "",
         new_price: "",
         old_price: "",
       });
@@ -77,7 +113,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
     <div className="add-product">
       <div className="add-product-inner">
         <button className="close-button" onClick={onClose}>
-          <img src={cross_icon} alt="" />
+          <img src={cross_icon} alt="Close" />
         </button>
         <h2>Add Product</h2>
         {showSuccessMessage && <p>Product Added Successfully</p>}
@@ -134,7 +170,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
             <img
               src={image ? URL.createObjectURL(image) : upload_area}
               className="addproduct-thumbnail-img"
-              alt=""
+              alt="Upload Area"
             />
           </label>
           <input
@@ -145,7 +181,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
             hidden
           />
         </div>
-        <button onClick={AddProduct} className="addproduct-btn">
+        <button onClick={addProduct} className="addproduct-btn">
           ADD
         </button>
       </div>
