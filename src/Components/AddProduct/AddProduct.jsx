@@ -22,7 +22,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
 
   const imageHandler = (e) => {
     const file = e.target.files[0];
-    const maxSize = 50 * 1024 * 1024;
+    const maxSize = 50 * 1024 * 1024; // 50 MB
 
     if (file.size > maxSize) {
       alert("File size exceeds the maximum limit of 50MB");
@@ -66,7 +66,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
           },
         }
       );
-      return response.data; 
+      return response.data; // Assuming response data is the ID of the uploaded image
     } catch (error) {
       console.error("Error uploading file:", error);
       throw error;

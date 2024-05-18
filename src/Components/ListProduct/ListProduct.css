@@ -27,7 +27,7 @@
 }
 
 .listproduct-product-icon{
-    height: 80px;
+    height: 100px;
 
 }
 
@@ -36,8 +36,9 @@
     margin: auto;
 }
 
-.list-product-allproducts{
+.listproduct-allproducts{
     overflow-y: auto;
+    width: 100%;
 }
 
 .add-product-inner {
@@ -103,6 +104,10 @@ cursor: pointer;
 }
 .p-plus{
     font-size: 10px;
+}
+.category-select{
+  border: 3px solid black;
+    border-radius: 10px;
 }
 
 
