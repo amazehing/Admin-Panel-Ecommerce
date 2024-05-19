@@ -19,10 +19,18 @@ const AddCategory = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get("http://localhost:8080/categories");
-      setCategories(response.data);
+      const capitalizedCategories = response.data.map((cat) => ({
+        ...cat,
+        name: capitalize(cat.name),
+      }));
+      setCategories(capitalizedCategories);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
+  };
+
+  const capitalize = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const changeHandler = (e) => {
