@@ -5,6 +5,11 @@ import upload_area from "../../assets/upload_area.svg";
 import cross_icon from "../../assets/cross_icon.png";
 
 const AddProduct = ({ onClose, onProductAdded }) => {
+  const axiosInstance = axios.create({
+    baseURL: 'https://localhost:8443', auth: {
+      username: 'admin', password: 'admin!password'
+    }
+  });
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [productDetails, setProductDetails] = useState({
@@ -42,7 +47,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:8443/categories");
+      const response = await axiosInstance.get("/categories");
       setCategories(response.data);
 
       if (response.data.length > 0 && !productDetails.category) {
@@ -57,8 +62,8 @@ const AddProduct = ({ onClose, onProductAdded }) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const response = await axios.post(
-        "http://localhost:8443/images",
+      const response = await axiosInstance.post(
+        "/images",
         formData,
         {
           headers: {
@@ -88,8 +93,8 @@ const AddProduct = ({ onClose, onProductAdded }) => {
         imageIds: imageId ? [imageId] : []
       };
 
-      await axios.post(
-        `http://localhost:8443/categories/${productDetails.category}/products`,
+      await axiosInstance.post(
+        `/categories/${productDetails.category}/products`,
         payload
       );
 
