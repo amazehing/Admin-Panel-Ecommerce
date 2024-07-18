@@ -18,7 +18,7 @@ const AddCategory = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/categories");
+      const response = await axios.get("http://localhost:8443/categories");
       const capitalizedCategories = response.data.map((cat) => ({
         ...cat,
         name: capitalize(cat.name),
@@ -46,7 +46,7 @@ const AddCategory = () => {
     try {
       const payload = { name: category.name };
       const response = await axios.post(
-        "http://localhost:8080/categories",
+        "http://localhost:8443/categories",
         payload
       );
       setCategory({ name: "" });
@@ -66,17 +66,17 @@ const AddCategory = () => {
   const deleteCategory = async (categoryId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/products?category=${categoryId}`
+        `http://localhost:8443/products?category=${categoryId}`
       );
       const productsToDelete = response.data;
 
       await Promise.all(
         productsToDelete.map(async (product) => {
-          await axios.delete(`http://localhost:8080/products/${product.id}`);
+          await axios.delete(`http://localhost:8443/products/${product.id}`);
         })
       );
 
-      await axios.delete(`http://localhost:8080/categories/${categoryId}`);
+      await axios.delete(`http://localhost:8443/categories/${categoryId}`);
 
       fetchCategories();
     } catch (error) {

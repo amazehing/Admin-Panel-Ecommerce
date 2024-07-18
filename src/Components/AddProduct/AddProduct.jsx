@@ -42,7 +42,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/categories");
+      const response = await axios.get("http://localhost:8443/categories");
       setCategories(response.data);
 
       if (response.data.length > 0 && !productDetails.category) {
@@ -58,7 +58,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
       const formData = new FormData();
       formData.append("file", file);
       const response = await axios.post(
-        "http://localhost:8080/images",
+        "http://localhost:8443/images",
         formData,
         {
           headers: {
@@ -89,7 +89,7 @@ const AddProduct = ({ onClose, onProductAdded }) => {
       };
 
       await axios.post(
-        `http://localhost:8080/categories/${productDetails.category}/products`,
+        `http://localhost:8443/categories/${productDetails.category}/products`,
         payload
       );
 

@@ -12,7 +12,7 @@ const ListProduct = () => {
 
   const fetchInfo = async () => {
     try {
-      const response = await fetch("http://localhost:8080/products");
+      const response = await fetch("http://localhost:8443/products");
       const data = await response.json();
 
       const products = data.map((item) => ({
@@ -33,7 +33,7 @@ const ListProduct = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8080/categories");
+      const response = await fetch("http://localhost:8443/categories");
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -48,7 +48,7 @@ const ListProduct = () => {
 
   const removeProduct = async (id) => {
     try {
-      await fetch(`http://localhost:8080/products/${id}`, {
+      await fetch(`http://localhost:8443/products/${id}`, {
         method: "DELETE",
         headers: {
           Accept: "application/json",
@@ -135,7 +135,7 @@ const ListProduct = () => {
                 {product.images?.[0] && (
                   <img
                     className="listproduct-product-icon"
-                    src={`http://localhost:8080/images/${product.images[0].id}`}
+                    src={`http://localhost:8443/images/${product.images[0].id}`}
                     alt="Product"
                   />
                 )}
