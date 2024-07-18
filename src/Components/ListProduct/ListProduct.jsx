@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./ListProduct.css";
 import cross_icon from "..//../assets/cross_icon.png";
 import AddProduct from "../AddProduct/AddProduct";
+import axios from "axios";
 
 const ListProduct = () => {
+  const axiosInstance = axios.create({
+    baseURL: 'https://localhost:8443', auth: {
+      username: 'admin', password: 'admin!password'
+    }
+  });
   const [allproducts, setAllProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -12,8 +18,8 @@ const ListProduct = () => {
 
   const fetchInfo = async () => {
     try {
-      const response = await fetch("http://localhost:8443/products");
-      const data = await response.json();
+      const response = await axiosInstance.get("/products");
+      const data = await response.data;
 
       const products = data.map((item) => ({
         id: item.id,
@@ -33,8 +39,8 @@ const ListProduct = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8443/categories");
-      const data = await response.json();
+      const response = await axiosInstance.get("/categories");
+      const data = await response.data;
       setCategories(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -48,13 +54,7 @@ const ListProduct = () => {
 
   const removeProduct = async (id) => {
     try {
-      await fetch(`http://localhost:8443/products/${id}`, {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      await axiosInstance.delete(`/products/${id}`);
 
       await fetchInfo();
     } catch (error) {
@@ -135,7 +135,7 @@ const ListProduct = () => {
                 {product.images?.[0] && (
                   <img
                     className="listproduct-product-icon"
-                    src={`http://localhost:8443/images/${product.images[0].id}`}
+                    src={`https://localhost:8443/images/${product.images[0].id}`}
                     alt="Product"
                   />
                 )}
