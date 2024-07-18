@@ -6,7 +6,7 @@ import axios from "axios";
 
 const ListProduct = () => {
   const axiosInstance = axios.create({
-    baseURL: 'https://localhost:8443', auth: {
+    baseURL: 'http://localhost:8080', auth: {
       username: 'admin', password: 'admin!password'
     }
   });
@@ -135,7 +135,7 @@ const ListProduct = () => {
                 {product.images?.[0] && (
                   <img
                     className="listproduct-product-icon"
-                    src={`https://localhost:8443/images/${product.images[0].id}`}
+                    src={`http://localhost:8080/images/${product.images[0].id}`}
                     alt="Product"
                   />
                 )}

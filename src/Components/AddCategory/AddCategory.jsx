@@ -5,7 +5,7 @@ import cross_icon from "..//../assets/cross_icon.png";
 
 const AddCategory = () => {
     const axiosInstance = axios.create({
-        baseURL: 'https://localhost:8443', auth: {
+        baseURL: 'http://localhost:8080', auth: {
             username: 'admin', password: 'admin!password'
         }
     });
